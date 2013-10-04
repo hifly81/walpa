@@ -27,15 +27,12 @@ if [ "$dir_choosen_ret" -ne 0 ]; then
 else
   #select transition interval
   TRANSITION_INTERVAL=$(zenity --scale --title "Walpa" --min-value=5 --max-value=1800 --value=5 --step 1 --text="Enter an interval for changing the wallpaper.\n\n Values are in seconds.")
-  if [ -n "$TRANSITION_INTERVAL" ]
+  if [ -z "$TRANSITION_INTERVAL" ]
    then
-    echo ""
-  else
-   echo ""
-   exit 1
+    exit 1
   fi
   while true;do
-   PICS=$(ls $DIR/*.jpg | sort -R)
+   PICS=$(ls $DIR/{*.jpg,*.jpeg,*.png,*.bmp,*.tif} 2>/dev/null| sort -R)
    for PIC in $PICS
     do
      #get pic dimensions
@@ -52,8 +49,6 @@ else
       esac
       echo 'message:wallpa --> '$(basename $PIC) | zenity --notification --listen
       break
-     else
-      echo ""
      fi
     done
    #start transition
