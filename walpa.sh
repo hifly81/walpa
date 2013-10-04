@@ -1,7 +1,7 @@
 #!/bin/bash
 ## FILE: Walpa
 ##
-## DESCRIPTION: Walpa -- Change Desktop Wallpaper for gnome3,gnome2,unity,mate,cinnamon
+## DESCRIPTION: Walpa -- Change Desktop Wallpaper for gnome3,gnome2,unity,mate,cinnamon --
 ##
 ## AUTHOR: 
 ##

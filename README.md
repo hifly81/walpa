@@ -5,6 +5,7 @@ usage: ./walpa.sh
 requires: zenity (for GUI) - imageMagick (identify command tool) - feh (for cinnamon window manager)
 
 -- CHANGE LOG --
+
 0.3 - 10/04/2013
  - Added support for cinnamon
 
