@@ -14,6 +14,10 @@
 ## USAGE: walpa
 ##
 
+#get screen resolution
+Xaxis=$(xrandr --current | grep '*' | uniq | awk '{print $1}' |  cut -d 'x' -f1)
+Yaxis=$(xrandr --current | grep '*' | uniq | awk '{print $1}' |  cut -d 'x' -f2)
+#select local folder for images
 DIR=`zenity --file-selection --text="Select Image Folder" --directory --title "Walpa"`
 dir_choosen_ret=$?
 
@@ -21,8 +25,9 @@ if [ "$dir_choosen_ret" -ne 0 ]; then
   zenity --warning --title="Walpa" --text="No Folder choosen...Exit!"
   exit 1
 else
-  SLEEP_INTERVAL=$(zenity --scale --title "Walpa" --min-value=5 --max-value=1800 --value=5 --step 1 --text="Enter an interval for changing the wallpaper.\n\n Values are in seconds.")
-  if [ -n "$SLEEP_INTERVAL" ]
+  #select transition interval
+  TRANSITION_INTERVAL=$(zenity --scale --title "Walpa" --min-value=5 --max-value=1800 --value=5 --step 1 --text="Enter an interval for changing the wallpaper.\n\n Values are in seconds.")
+  if [ -n "$TRANSITION_INTERVAL" ]
    then
     echo ""
   else
@@ -30,14 +35,27 @@ else
    exit 1
   fi
   while true;do
-   PIC=$(ls $DIR/*.jpg | shuf -n1)
-   case $DESKTOP_SESSION in "mate") gsettings set org.mate.background picture-filename $PIC;;
-   "gnome-classic") gconftool-2 --type string --set /desktop/gnome/background/picture_filename $PIC;;
-   "gnome") gsettings set org.gnome.desktop.background picture-uri $PIC;;
-   "gnome-shell") gsettings set org.gnome.desktop.background picture-uri $PIC;;
-   "ubuntu") gsettings set org.gnome.desktop.background picture-uri $PIC;;
-   *) exit 1;;
-   esac
-   sleep $SLEEP_INTERVAL
+   PICS=$(ls $DIR/*.jpg | sort -R)
+   for PIC in $PICS
+    do
+     #get pic dimensions
+     Xpic=$(identify $PIC | awk '{print $3}' | tr "x" " " | awk '{print $1}')
+     Ypic=$(identify $PIC | awk '{print $3}' | tr "x" " " | awk '{print $1}')
+     if (( $Xpic > $Xaxis )) && (( $Ypic > $Yaxis )); then
+      case $DESKTOP_SESSION in "mate") gsettings set org.mate.background picture-filename $PIC;;
+   	"gnome-classic") gconftool-2 --type string --set /desktop/gnome/background/picture_filename $PIC;;
+   	"gnome") gsettings set org.gnome.desktop.background picture-uri $PIC;;
+   	"gnome-shell") gsettings set org.gnome.desktop.background picture-uri $PIC;;
+   	"ubuntu") gsettings set org.gnome.desktop.background picture-uri $PIC;;
+   	*) exit 1;;
+      esac
+      echo 'message:wallpa --> '$(basename $PIC) | zenity --notification --listen
+      break
+     else
+      echo ""
+     fi
+    done
+   #start transition
+   sleep $TRANSITION_INTERVAL
   done
 fi
