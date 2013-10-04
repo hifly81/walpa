@@ -1,7 +1,7 @@
 #!/bin/bash
 ## FILE: Walpa
 ##
-## DESCRIPTION: Walpa -- Change Desktop Wallpaper for gnome3,unity,mate
+## DESCRIPTION: Walpa -- Change Desktop Wallpaper for gnome3,gnome2,unity,mate,cinnamon
 ##
 ## AUTHOR: 
 ##
@@ -47,6 +47,7 @@ else
    	"gnome") gsettings set org.gnome.desktop.background picture-uri $PIC;;
    	"gnome-shell") gsettings set org.gnome.desktop.background picture-uri $PIC;;
    	"ubuntu") gsettings set org.gnome.desktop.background picture-uri $PIC;;
+	"cinnamon") feh --bg-fill $PIC;;
    	*) exit 1;;
       esac
       echo 'message:wallpa --> '$(basename $PIC) | zenity --notification --listen
