@@ -1,11 +1,14 @@
 Walpa -- A simple bash script to change Desktop Wallpaper for gnome3,unity,mate,cinnamon --
 
 usage: 
-#run iunteractive mode
+
+##run interactive mode
 ./walpa
-#run as daemon
+
+##run as daemon
 ./walpa -d
-#stop
+
+##stop
 ./walpa -q
 
 requires: zenity (for GUI) - imageMagick (identify command tool) - feh (for cinnamon window manager)
