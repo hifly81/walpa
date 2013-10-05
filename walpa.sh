@@ -14,9 +14,6 @@
 ## USAGE: walpa
 ##
 
-ps -elf | grep walpa | grep -v "grep" | awk '{print $4}'
-
-
 case "$1" in
     -d|--daemon)
         $0 < /dev/null &> /dev/null & disown
