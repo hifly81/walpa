@@ -14,6 +14,23 @@
 ## USAGE: walpa
 ##
 
+ps -elf | grep walpa | grep -v "grep" | awk '{print $4}'
+
+
+case "$1" in
+    -d|--daemon)
+        $0 < /dev/null &> /dev/null & disown
+        exit 0
+        ;;
+    -q|--quit)
+        PID=$(ps -elf | grep walpa | grep -v "grep" | awk '{print $4}')
+        kill -9 $PID
+        exit 0
+        ;;
+    *)
+        ;;
+esac
+
 #get screen resolution
 Xaxis=$(xrandr --current | grep '*' | head -n 1 | uniq | awk '{print $1}' |  cut -d 'x' -f1)
 Yaxis=$(xrandr --current | grep '*' | head -n 1 | uniq | awk '{print $1}' |  cut -d 'x' -f2)
